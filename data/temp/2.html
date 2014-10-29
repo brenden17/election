@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Election</title>
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" type="text/css" href="../css/dc.css"/>  -->
+</head>
+<body>
+
+<div id="chart-ring-year"></div>
+<div id="chart-hist-spend"></div>
+<div id="chart-row-spenders"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/crossfilter.min.js"></script>
+<script type="text/javascript" src="js/dc.min.js"></script>
+<script type="text/javascript">
+    var data = 
+        [
+{OPR: 3227639, RPR: 3024572, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "서울", total: 6276699, OPR_P: 0.514225550723, RPR_P: 0.481873035492, ETC_P: 0.00390141378454},
+{OPR: 794213, RPR: 852600, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "인천", total: 1652966, OPR_P: 0.480477517384, RPR_P: 0.515800083002, ETC_P: 0.00372239961379},
+{OPR: 3442084, RPR: 3528915, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "경기", total: 6996723, OPR_P: 0.491956591679, RPR_P: 0.504366830015, ETC_P: 0.00367657830673},
+{OPR: 340870, RPR: 562876, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "강원", total: 908254, OPR_P: 0.375302503485, RPR_P: 0.619734127238, ETC_P: 0.00496336927776},
+{OPR: 30787, RPR: 33587, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "세종", total: 64697, OPR_P: 0.475864414115, RPR_P: 0.519143082369, ETC_P: 0.00499250351639},
+{OPR: 448310, RPR: 450576, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "대전", total: 901878, OPR_P: 0.497084971582, RPR_P: 0.499597506536, ETC_P: 0.00331752188212},
+{OPR: 497630, RPR: 658928, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "충남", total: 1162936, OPR_P: 0.427908328575, RPR_P: 0.566607276755, ETC_P: 0.00548439467004},
+{OPR: 398907, RPR: 518442, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "충북", total: 922053, OPR_P: 0.432629143878, RPR_P: 0.562269197107, ETC_P: 0.00510165901526},
+{OPR: 823737, RPR: 69574, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "광주", total: 895586, OPR_P: 0.919774315364, RPR_P: 0.0776854484103, ETC_P: 0.00254023622522},
+{OPR: 1038347, RPR: 116296, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "전남", total: 1162959, OPR_P: 0.892849189008, RPR_P: 0.100000085988, ETC_P: 0.00715072500406},
+{OPR: 980322, RPR: 150315, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "전북", total: 1136575, OPR_P: 0.862522930735, RPR_P: 0.132252601016, ETC_P: 0.00522446824891},
+{OPR: 882511, RPR: 1324159, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "부산", total: 2213405, OPR_P: 0.398711939297, RPR_P: 0.598245237541, ETC_P: 0.0030428231616},
+{OPR: 275451, RPR: 413977, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "울산", total: 692433, OPR_P: 0.397801664565, RPR_P: 0.597858565377, ETC_P: 0.00433977005718},
+{OPR: 724896, RPR: 1259174, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "경남", total: 1994771, OPR_P: 0.363398104344, RPR_P: 0.631237370104, ETC_P: 0.00536452555206},
+{OPR: 309034, RPR: 1267789, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "대구", total: 1581840, OPR_P: 0.195363627168, RPR_P: 0.801464749911, ETC_P: 0.00317162292014},
+{OPR: 316659, RPR: 1375164, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "경북", total: 1701511, OPR_P: 0.186104585865, RPR_P: 0.808201651356, ETC_P: 0.00569376277908},
+{OPR: 161235, RPR: 166184, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "제주", total: 329335, OPR_P: 0.489577481895, RPR_P: 0.504604733782, ETC_P: 0.00581778432295},
+{OPR: 89192, RPR: 67319, TS: 75.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 18, date: "2014/12", local: "재외국민", total: 158196, OPR_P: 0.563806923057, RPR_P: 0.42554173304, ETC_P: 0.0106513439025},
+{OPR: 2689162, RPR: 1237812, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "서울", total: 5051369, OPR_P: 0.532363008919, RPR_P: 0.245044858136, ETC_P: 0.222592132945},
+{OPR: 593283, RPR: 286565, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "인천", total: 1205357, OPR_P: 0.492205213891, RPR_P: 0.237742842992, ETC_P: 0.270051943117},
+{OPR: 2603443, RPR: 1181936, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "경기", total: 5017407, OPR_P: 0.518882163636, RPR_P: 0.23556709671, ETC_P: 0.245550739655},
+{OPR: 376004, RPR: 136668, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "강원", total: 723503, OPR_P: 0.51969929634, RPR_P: 0.188897627239, ETC_P: 0.291403076421},
+{OPR: 246008, RPR: 159700, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "대전", total: 677948, OPR_P: 0.362871488669, RPR_P: 0.235563789553, ETC_P: 0.401564721778},
+{OPR: 313693, RPR: 192999, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "충남", total: 915505, OPR_P: 0.342644769826, RPR_P: 0.210811519325, ETC_P: 0.446543710848},
+{OPR: 289499, RPR: 165637, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "충북", total: 696096, OPR_P: 0.415889475015, RPR_P: 0.237951374523, ETC_P: 0.346159150462},
+{OPR: 56875, RPR: 527588, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "광주", total: 661552, OPR_P: 0.0859720777807, RPR_P: 0.797500423247, ETC_P: 0.116527498972},
+{OPR: 88834, RPR: 757309, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "전남", total: 962851, OPR_P: 0.092261419472, RPR_P: 0.786527718204, ETC_P: 0.121210862324},
+{OPR: 86149, RPR: 777236, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "전북", total: 952352, OPR_P: 0.0904591999597, RPR_P: 0.816122610127, ETC_P: 0.093418189913},
+{OPR: 1018715, RPR: 236708, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "부산", total: 1759252, OPR_P: 0.579061442022, RPR_P: 0.134550365724, ETC_P: 0.286388192254},
+{OPR: 279891, RPR: 70736, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "울산", total: 518586, OPR_P: 0.539719545071, RPR_P: 0.136401676867, ETC_P: 0.323878778062},
+{OPR: 876719, RPR: 75932, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "대구", total: 1263678, OPR_P: 0.69378354296, RPR_P: 0.0600880920614, ETC_P: 0.246128364979},
+{OPR: 843662, RPR: 189463, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "경남", total: 1533330, OPR_P: 0.550215543947, RPR_P: 0.123563094702, ETC_P: 0.326221361351},
+{OPR: 1033957, RPR: 96822, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "경북", total: 1424472, OPR_P: 0.725852807216, RPR_P: 0.0679704479976, ETC_P: 0.206176744787},
+{OPR: 96495, RPR: 81570, TS: 63.0, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 17, date: "2007/12", local: "제주", total: 249522, OPR_P: 0.386719407507, RPR_P: 0.326905042441, ETC_P: 0.286375550052},
+{OPR: 2447376, RPR: 2792957, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "서울", total: 5443990, OPR_P: 0.449555564944, RPR_P: 0.513034924752, ETC_P: 0.037409510304},
+{OPR: 547205, RPR: 611786, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "인천", total: 1227816, OPR_P: 0.445673455958, RPR_P: 0.498271728011, ETC_P: 0.0560548160311},
+{OPR: 2120191, RPR: 2430193, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "경기", total: 4798006, OPR_P: 0.441890026815, RPR_P: 0.506500617131, ETC_P: 0.0516093560533},
+{OPR: 400405, RPR: 316004, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "강원", total: 762937, OPR_P: 0.524820529087, RPR_P: 0.414194094663, ETC_P: 0.0609853762499},
+{OPR: 266760, RPR: 369046, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "대전", total: 669846, OPR_P: 0.398240789674, RPR_P: 0.550941559702, ETC_P: 0.0508176506242},
+{OPR: 375110, RPR: 474531, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "충남", total: 909818, OPR_P: 0.412291249459, RPR_P: 0.521566950753, ETC_P: 0.0661417997885},
+{OPR: 311044, RPR: 365623, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "충북", total: 725162, OPR_P: 0.428930363146, RPR_P: 0.50419492472, ETC_P: 0.0668747121333},
+{OPR: 26869, RPR: 715181, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "광주", total: 751416, OPR_P: 0.0357578225643, RPR_P: 0.95177771035, ETC_P: 0.0124644670861},
+{OPR: 53074, RPR: 1070506, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "전남", total: 1146320, OPR_P: 0.0462994626282, RPR_P: 0.933863144672, ETC_P: 0.0198373927001},
+{OPR: 65334, RPR: 966053, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "전북", total: 1054800, OPR_P: 0.0619397042093, RPR_P: 0.915863670838, ETC_P: 0.0221966249526},
+{OPR: 1314274, RPR: 587946, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "부산", total: 1969073, OPR_P: 0.667458240502, RPR_P: 0.298590250336, ETC_P: 0.0339515091619},
+{OPR: 267737, RPR: 178584, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "울산", total: 506322, OPR_P: 0.528788004471, RPR_P: 0.352708355552, ETC_P: 0.118503639976},
+{OPR: 1083564, RPR: 434642, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "경남", total: 1604744, OPR_P: 0.675225456521, RPR_P: 0.270848185131, ETC_P: 0.0539263583475},
+{OPR: 1002164, RPR: 240745, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "대구", total: 1288909, OPR_P: 0.777528902351, RPR_P: 0.18678199935, ETC_P: 0.0356890982994},
+{OPR: 1056446, RPR: 311358, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "경북", total: 1437938, OPR_P: 0.73469509812, RPR_P: 0.216530893543, ETC_P: 0.0487740083369},
+{OPR: 105744, RPR: 148423, TS: 70.8, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 16, date: "2002/12", local: "제주", total: 268227, OPR_P: 0.394233242738, RPR_P: 0.553348469766, ETC_P: 0.0524182874953},
+{OPR: 2627308, RPR: 2394309, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "서울", total: 5854773, OPR_P: 0.448746347638, RPR_P: 0.408949928545, ETC_P: 0.142303723816},
+{OPR: 497839, RPR: 470560, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "인천", total: 1292611, OPR_P: 0.385142165741, RPR_P: 0.364038368852, ETC_P: 0.250819465408},
+{OPR: 1781577, RPR: 1612108, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "경기", total: 4535524, OPR_P: 0.392805109178, RPR_P: 0.355440297527, ETC_P: 0.251754593295},
+{OPR: 197438, RPR: 358921, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "강원", total: 830943, OPR_P: 0.237607152356, RPR_P: 0.431944188711, ETC_P: 0.330448658933},
+{OPR: 307493, RPR: 199266, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "대전", total: 682893, OPR_P: 0.45027991208, RPR_P: 0.291796811506, ETC_P: 0.257923276414},
+{OPR: 483093, RPR: 235457, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "충남", total: 1001198, OPR_P: 0.482514947093, RPR_P: 0.235175260038, ETC_P: 0.282309792868},
+{OPR: 295666, RPR: 243310, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "충북", total: 789816, OPR_P: 0.374347949396, RPR_P: 0.308059092244, ETC_P: 0.31759295836},
+{OPR: 754159, RPR: 13294, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "광주", total: 775199, OPR_P: 0.972858582119, RPR_P: 0.0171491449292, ETC_P: 0.00999227295185},
+{OPR: 1231726, RPR: 41534, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "전남", total: 1301836, OPR_P: 0.94614529019, RPR_P: 0.0319041722613, ETC_P: 0.0219505375485},
+{OPR: 1078957, RPR: 53124, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "전북", total: 1169189, OPR_P: 0.922825137766, RPR_P: 0.0454366231636, ETC_P: 0.03173823907},
+{OPR: 320178, RPR: 1117069, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "부산", total: 2094406, OPR_P: 0.152872938676, RPR_P: 0.533358384191, ETC_P: 0.313768677133},
+{OPR: 80751, RPR: 268998, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "울산", total: 523763, OPR_P: 0.154174693516, RPR_P: 0.51358725225, ETC_P: 0.332238054234},
+{OPR: 166576, RPR: 965907, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "대구", total: 1329088, OPR_P: 0.125331054076, RPR_P: 0.726744203544, ETC_P: 0.14792474238},
+{OPR: 182102, RPR: 908808, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "경남", total: 1648014, OPR_P: 0.110497847712, RPR_P: 0.551456480345, ETC_P: 0.338045671942},
+{OPR: 210403, RPR: 953360, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "경북", total: 1539608, OPR_P: 0.136660110885, RPR_P: 0.619222555352, ETC_P: 0.244117333763},
+{OPR: 111009, RPR: 100103, TS: 80.7, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 15, date: "1997/12", local: "제주", total: 273577, OPR_P: 0.405768759801, RPR_P: 0.36590429751, ETC_P: 0.228326942689},
+{OPR: 2246636, RPR: 2167298, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "서울", total: 5951777, OPR_P: 0.377473147935, RPR_P: 0.364143011407, ETC_P: 0.258383840658},
+{OPR: 338538, RPR: 397361, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "인천", total: 1066288, OPR_P: 0.31749208469, RPR_P: 0.372658231172, ETC_P: 0.309849684138},
+{OPR: 1103498, RPR: 1254025, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "경기", total: 3451395, OPR_P: 0.319725212559, RPR_P: 0.363338592077, ETC_P: 0.316936195364},
+{OPR: 127265, RPR: 340528, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "강원", total: 820255, OPR_P: 0.155152970723, RPR_P: 0.415148947583, ETC_P: 0.429698081694},
+{OPR: 165067, RPR: 202137, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "대전", total: 574403, OPR_P: 0.287371409968, RPR_P: 0.351907980982, ETC_P: 0.36072060905},
+{OPR: 271921, RPR: 351789, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "충남", total: 952454, OPR_P: 0.285495152522, RPR_P: 0.369350120846, ETC_P: 0.345154726632},
+{OPR: 191743, RPR: 281678, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "충북", total: 736171, OPR_P: 0.260459865982, RPR_P: 0.382625775805, ETC_P: 0.356914358213},
+{OPR: 652337, RPR: 14504, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "광주", total: 680600, OPR_P: 0.958473405818, RPR_P: 0.0213106082868, ETC_P: 0.0202159858948},
+{OPR: 1170398, RPR: 53360, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "전남", total: 1270023, OPR_P: 0.92155653874, RPR_P: 0.0420149871302, ETC_P: 0.03642847413},
+{OPR: 991483, RPR: 63175, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "전북", total: 1112350, OPR_P: 0.891340854947, RPR_P: 0.0567941744954, ETC_P: 0.0518649705578},
+{OPR: 265055, RPR: 1551473, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "부산", total: 2115389, OPR_P: 0.125298467563, RPR_P: 0.733422079816, ETC_P: 0.141279452621},
+{OPR: 193373, RPR: 1514043, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "경남", total: 2093590, OPR_P: 0.0923643120191, RPR_P: 0.723180278851, ETC_P: 0.18445540913},
+{OPR: 90641, RPR: 690245, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "대구", total: 1158193, OPR_P: 0.0782607043904, RPR_P: 0.595967166094, ETC_P: 0.325772129516},
+{OPR: 147440, RPR: 991424, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "경북", total: 1531637, OPR_P: 0.0962630179344, RPR_P: 0.647296977025, ETC_P: 0.25644000504},
+{OPR: 85889, RPR: 104292, TS: 81.9, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 14, date: "1992/12", local: "제주", total: 260884, OPR_P: 0.329222949663, RPR_P: 0.399763879732, ETC_P: 0.271013170605},
+{OPR: 1637347, RPR: 1682824, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "서울", total: 5618729, OPR_P: 0.291408786578, RPR_P: 0.299502609932, ETC_P: 0.40908860349},
+{OPR: 248604, RPR: 326186, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "인천", total: 828860, OPR_P: 0.299934850276, RPR_P: 0.393535699636, ETC_P: 0.306529450088},
+{OPR: 800274, RPR: 1204235, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "경기", total: 2905323, OPR_P: 0.275450956744, RPR_P: 0.414492639889, ETC_P: 0.310056403367},
+{OPR: 240585, RPR: 546569, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "강원", total: 921214, OPR_P: 0.261160816054, RPR_P: 0.593313822847, ETC_P: 0.1455253611},
+{OPR: 246527, RPR: 402491, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "충남", total: 1534906, OPR_P: 0.160613744425, RPR_P: 0.26222517861, ETC_P: 0.577161076965},
+{OPR: 213851, RPR: 355222, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "충북", total: 757457, OPR_P: 0.282327577671, RPR_P: 0.468966555197, ETC_P: 0.248705867132},
+{OPR: 2471, RPR: 22943, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "광주", total: 476153, OPR_P: 0.00518950841431, RPR_P: 0.048184092088, ETC_P: 0.946626399498},
+{OPR: 16826, RPR: 119229, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "전남", total: 1459870, OPR_P: 0.0115256837938, RPR_P: 0.0816709707029, ETC_P: 0.906803345503},
+{OPR: 17130, RPR: 160760, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "전북", total: 1136975, OPR_P: 0.0150662943336, RPR_P: 0.141392730711, ETC_P: 0.843540974955},
+{OPR: 111701, RPR: 640622, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "부산", total: 1995317, OPR_P: 0.0559815808716, RPR_P: 0.321062768472, ETC_P: 0.622955650656},
+{OPR: 987042, RPR: 792757, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "경남", total: 1925412, OPR_P: 0.512639372768, RPR_P: 0.411733696476, ETC_P: 0.0756269307556},
+{OPR: 274880, RPR: 800363, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "대구", total: 1132078, OPR_P: 0.242810124391, RPR_P: 0.706985737732, ETC_P: 0.0502041378774},
+{OPR: 470189, RPR: 1108035, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "경북", total: 1669019, OPR_P: 0.281715786339, RPR_P: 0.663883994131, ETC_P: 0.0544002195302},
+{OPR: 64844, RPR: 120502, TS: 89.2, T_OPR: 0.480665689911, T_RPR: 0.5150893006, co: 13, date: "1987/12", local: "제주", total: 242098, OPR_P: 0.267841948302, RPR_P: 0.497740584391, ETC_P: 0.234417467307}
+];
+
+// var yearRingChart   = dc.pieChart("#chart-ring-year");
+var spendHistChart  = dc.barChart("#chart-hist-spend");
+// var spenderRowChart = dc.rowChart("#chart-row-spenders");
+
+// set crossfilter
+var ndx = crossfilter(data);
+var yearDim  = ndx.dimension(function(d) {return d.year;});
+var runGroup = yearDim.group();
+
+
+
+// var nameDim  = ndx.dimension(function(d) {return d.Name;});
+// var spendPerYear = yearDim.group().reduceSum(function(d) {return +d.Spent;});
+// var spendPerName = nameDim.group().reduceSum(function(d) {return +d.Spent;});
+// var spendHist    = spendDim.group().reduceCount();
+
+// yearRingChart
+//     .width(200).height(200)
+//     .dimension(yearDim)
+//     .group(spendPerYear)
+//     .innerRadius(50);
+
+// spendHistChart
+//     .width(300).height(200)
+//     .dimension(spendDim)
+//     .group(spendHist)
+//     .x(d3.scale.linear().domain([0,10]))
+//     .elasticY(true);
+
+// spendHistChart.xAxis().tickFormat(function(d) {return d*10}); // convert back to base unit
+// spendHistChart.yAxis().ticks(2);
+
+// spenderRowChart
+//     .width(350).height(200)
+//     .dimension(yearDim)
+//     .group(runGroup)
+//     .elasticX(true);
+
+dc.renderAll();
+
+            
+    // var parseDate = d3.time.format("%Y/%m").parse;
+    // data.forEach(function(d) {
+    //     d.date = parseDate(d.date);
+    //     d.year=d.date.getFullYear();
+    // });
+    
+    // var ndx = crossfilter(data);
+    // var all = ndx.groupAll();
+
+    // var volumeByYear = ndx.dimension(function(d) {return d.year;});
+    
+    // var industryChart = dc.bubbleChart("#industry-chart");
+
+    // d3.json("all.json", function (d) {
+    //     console.log(d);
+    // });
+
+    // dc.pieChart("#gain-loss-chart", "chartGroup")
+    // .width(200) // (optional) define chart width, :default = 200
+    // .height(200) // (optional) define chart height, :default = 200
+    // .transitionDuration(500) // (optional) define chart transition duration, :default = 350
+    // // (optional) define color array for slices
+    // .colors(['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#dadaeb'])
+    // // (optional) define color domain to match your data domain if you want to bind data or color
+    // .colorDomain([-1750, 1644])
+    // // (optional) define color value accessor
+    // .colorAccessor(function(d, i){return d.value;})
+    // .radius(90) // define pie radius
+    // // (optional) if inner radius is used then a donut chart will
+    // // be generated instead of pie chart
+    // .innerRadius(40)
+    // .dimension(gainOrLoss) // set dimension
+    // .group(gainOrLossGroup) // set group
+    // // (optional) by default pie chart will use group.key as it's label
+    // // but you can overwrite it with a closure
+    // .label(function(d) { return d.data.key + "(" + Math.floor(d.data.value / all.value() * 100) + "%)"; })
+    // // (optional) whether chart should render labels, :default = true
+    // .renderLabel(true)
+    // // (optional) by default pie chart will use group.key and group.value as its title
+    // // you can overwrite it with a closure
+    // .title(function(d) { return d.data.key + "(" + Math.floor(d.data.value / all.value() * 100) + "%)"; })
+    // // (optional) whether chart should render titles, :default = false
+    // .renderTitle(true);
+
+
+
+//     var hits = dateDim.group().reduceSum(function(d) {return d.total;});
+//     var minDate = dateDim.bottom(1)[0].date;
+//     var maxDate = dateDim.top(1)[0].date;
+    // var year_opr = yearDim.group().reduceSum(function(d) {return d.OPR;});
+    // var year_rpr = yearDim.group().reduceSum(function(d) {return d.RPR;});
+//     var status_302=dateDim.group().reduceSum(function(d) {return d.http_302;});
+//     var status_404=dateDim.group().reduceSum(function(d) {return d.http_404;});
+
+//     hitslineChart
+//         .width(500).height(200)
+//         .dimension(dateDim)
+//         .group(status_200,"200")
+//         .stack(status_302,"302")
+//         .stack(status_404,"404")   
+//         .renderArea(true)
+//         .x(d3.time.scale().domain([minDate,maxDate]))
+//         .brushOn(false)
+//         .legend(dc.legend().x(50).y(10).itemHeight(13).gap(5))
+//         .yAxisLabel("Hits per day");
+
+// var yearRingChart   = dc.pieChart("#chart-ring-year");
+// var yearDim  = ndx.dimension(function(d) {return +d.Year;});
+// var year_total = yearDim.group().reduceSum(function(d) {return d.http_200+d.http_302;});
+
+// yearRingChart
+//     .width(150).height(150)
+//     .dimension(yearDim)
+//     .group(year_total)
+//     .innerRadius(30);
+
+// var datatable   = dc.dataTable("#dc-data-table");
+// datatable
+//     .dimension(dateDim)
+//     .group(function(d) {return d.Year;})
+//     // dynamic columns creation using an array of closures
+//     .columns([
+//         function(d) { return d.date.getDate() + "/" + (d.date.getMonth() + 1) + "/" + d.date.getFullYear(); },
+//         function(d) {return d.http_200;},
+//         function(d) {return d.http_302;},
+//         function(d) {return d.http_404;},        
+//         function(d) {return d.total;}
+//     ]);
+
+
+//     dc.renderAll();
+
+</script>
+</body>
+</html>
